@@ -1,2 +1,2 @@
-public class Claim {
+public class Claim implements ClaimProcessManager{
 }
