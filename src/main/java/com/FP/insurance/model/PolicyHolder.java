@@ -1,5 +1,6 @@
 package main.java.com.FP.insurance.model;
 
+import java.security.Policy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,15 @@ public class PolicyHolder extends Customer {
             }
         }
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public PolicyHolder getPolicyHolder() {
+        return null;
+    }
+
     @Override
     public void addDependent(Dependent dep) {
         if (!dependents.contains(dep)) {

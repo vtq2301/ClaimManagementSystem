@@ -18,6 +18,8 @@ public abstract class Customer {
     public abstract void addDependent(Dependent dep);
     public abstract void printDependents();
 
+    public abstract PolicyHolder getPolicyHolder();
+
     public String getId() {
         return id;
     }

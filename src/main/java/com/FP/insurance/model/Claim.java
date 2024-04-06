@@ -35,6 +35,38 @@ public class Claim {
         return id;
     }
 
+    public Date getClaimDate() {
+        return claimDate;
+    }
+
+    public Date getExamDate() {
+        return examDate;
+    }
+
+    public Customer getInsuredPerson() {
+        return insuredPerson;
+    }
+
+    public InsuranceCard getCard() {
+        return card;
+    }
+
+    public List<String> getDocuments() {
+        return documents;
+    }
+
+    public int getClaimAmount() {
+        return claimAmount;
+    }
+
+    public ClaimStatus getStatus() {
+        return status;
+    }
+
+    public String getReceiverInfo() {
+        return receiverInfo;
+    }
+
     @Override
     public String toString() {
         return "Claim{" +

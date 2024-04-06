@@ -4,9 +4,7 @@ import main.java.com.FP.insurance.model.Customer;
 import main.java.com.FP.insurance.model.Dependent;
 import main.java.com.FP.insurance.model.PolicyHolder;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +13,7 @@ import java.util.Map;
 public class CustomerDAO implements DAO<Customer> {
     private static final String CUSTOMER_FILE_PATH = "src/resources/customers.txt";
 
+    private static final String HEADER = "id,fullName,cardNumber,policyHolderId";
     /**
      * Reads customer data from a file and organizes it into a list of customers.
      * This includes creating PolicyHolder and Dependent objects
@@ -82,7 +81,22 @@ public class CustomerDAO implements DAO<Customer> {
      * @param data
      */
     @Override
-    public void writeAll(List<Customer> customerList) {
+    public void writeAll(List<Customer> customers) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CUSTOMER_FILE_PATH))) {
+            writer.write(HEADER + "\n");
+
+            for (Customer customer : customers) {
+                writer.write(String.format("%s,%s,%s,%s\n",
+                        customer.getId(),
+                        customer.getFullName(),
+                        customer.getCardNumber(),
+                        customer.getPolicyHolder().getId()
+                ));
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving customers.");
+            e.printStackTrace();
+        }
 
     }
 }

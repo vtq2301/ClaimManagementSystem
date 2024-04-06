@@ -10,7 +10,6 @@ public interface ProcessManager<T> {
     String delete(String id);
     T getOne(String id);
     List<T> getAll();
-
     void viewOne(String id);
     void viewAll();
 

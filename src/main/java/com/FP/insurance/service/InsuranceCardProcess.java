@@ -76,7 +76,7 @@ public class InsuranceCardProcess implements ProcessManager<InsuranceCard> {
     }
 
     public void viewAll() {
-        System.out.println("No.\tCard Number\tInsured Person ID\tPolicy Owner\texpiration Date");
+        System.out.println("No.\tCard Number\tCard Holder ID\tPolicy Owner\texpiration Date");
         int i = 1;
         for (InsuranceCard c : cards) {
             System.out.print(i + "\t");

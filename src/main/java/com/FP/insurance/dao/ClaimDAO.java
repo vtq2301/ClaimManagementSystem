@@ -2,10 +2,7 @@ package main.java.com.FP.insurance.dao;
 
 import main.java.com.FP.insurance.model.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +12,7 @@ import java.util.List;
 
 public class ClaimDAO implements DAO<Claim>{
     private static final String CLAIMS_FILE_PATH = "src/resources/claims.txt";
+    private static final String HEADER = "id,claimDate,insuredPersonId,cardNumber,examDate,documents,claimAmount,status,receiverInfo";
     private List<Customer> customers;
     private List<InsuranceCard> cards;
 
@@ -101,7 +99,36 @@ public class ClaimDAO implements DAO<Claim>{
      * @param data
      */
     @Override
-    public void writeAll(List<Claim> data) {
+    public void writeAll(List<Claim> claims) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CLAIMS_FILE_PATH))) {
+            writer.write(HEADER + "\n");
+
+            for (Claim claim : claims) {
+                String claimDateStr = dateFormat.format(claim.getClaimDate());
+                String examDateStr = dateFormat.format(claim.getExamDate());
+
+                // Join documents with separator "/"
+                String documentsStr = String.join("/", claim.getDocuments());
+
+                // Write to file
+                writer.write(String.format("%s,%s,%s,%s,%s,%s,%d,%s,%s\n",
+                        claim.getId(),
+                        claimDateStr,
+                        claim.getInsuredPerson().getId(),
+                        claim.getCard().getCardNumber(),
+                        examDateStr,
+                        documentsStr,
+                        claim.getClaimAmount(),
+                        claim.getStatus().name(),
+                        claim.getReceiverInfo()
+                ));
+
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving claims.");
+            e.printStackTrace();
+        }
     }
 }

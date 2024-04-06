@@ -3,9 +3,7 @@ package main.java.com.FP.insurance.dao;
 import main.java.com.FP.insurance.model.Customer;
 import main.java.com.FP.insurance.model.InsuranceCard;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +13,7 @@ import java.util.List;
 public class InsuranceCardDAO implements DAO<InsuranceCard> {
 
     private static final String INSURANCE_CARD_FILE_PATH = "src/resources/insurance-cards.txt";
+    private static final String HEADER = "cardNumber,cardHolderId,policyOwner,expDate";
     List<Customer> customers;
 
     public void setCustomers(List<Customer> customers) {
@@ -68,7 +67,22 @@ public class InsuranceCardDAO implements DAO<InsuranceCard> {
      * @param data
      */
     @Override
-    public void writeAll(List<InsuranceCard> data) {
-
+    public void writeAll(List<InsuranceCard> cards) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(INSURANCE_CARD_FILE_PATH))) {
+            writer.write(HEADER + "\n");
+            for (InsuranceCard card : cards) {
+                String expDateStr = dateFormat.format(card.getExpDate());
+                writer.write(String.format("%s,%s,%s,%s\n",
+                        card.getCardNumber(),
+                        card.getCardHolder().getId(),
+                        card.getPolicyOwner(),
+                        expDateStr
+                ));
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving insurance cards.");
+            e.printStackTrace();
+        }
     }
 }
