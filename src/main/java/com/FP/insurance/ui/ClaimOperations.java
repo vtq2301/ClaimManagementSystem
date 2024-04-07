@@ -345,7 +345,7 @@ public class ClaimOperations extends Operations {
     @Override
     public void saveThenExit() {
         save();
-        System.out.println("Existing...");
+        System.out.println("Exiting...");
         System.exit(0);
     }
 }
