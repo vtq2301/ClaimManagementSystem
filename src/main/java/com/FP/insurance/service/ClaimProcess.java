@@ -7,6 +7,8 @@ import main.java.com.FP.insurance.model.Claim;
 
 import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ClaimProcess implements ProcessManager<Claim> {
@@ -98,12 +100,15 @@ public class ClaimProcess implements ProcessManager<Claim> {
     public void viewAll() {
         System.out.println("No.\tID\tClaim Date\tInsured Person ID\tExam Date\tClaim Amount\tStatus\n");
         int i = 1;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // sort by ID
+        claims.sort(Comparator.comparing(Claim::getId));
         for (Claim claim : claims) {
             System.out.print(i + "\t");
             System.out.print(claim.getId() + "\t");
-            System.out.print(claim.getClaimDate().toString() + "\t");
+            System.out.print(dateFormat.format(claim.getClaimDate()) + "\t");
             System.out.print(claim.getInsuredPerson().getId() + "\t");
-            System.out.print(claim.getExamDate().toString() + "\t");
+            System.out.print(dateFormat.format(claim.getExamDate()) + "\t");
             System.out.print("$"+ claim.getClaimAmount() + "\t");
             System.out.print(claim.getStatus().name() + "\n");
             System.out.println("> Documents: ");

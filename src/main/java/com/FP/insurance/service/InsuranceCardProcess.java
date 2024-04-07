@@ -5,6 +5,8 @@ package main.java.com.FP.insurance.service;
 
 import main.java.com.FP.insurance.model.InsuranceCard;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class InsuranceCardProcess implements ProcessManager<InsuranceCard> {
@@ -81,6 +83,7 @@ public class InsuranceCardProcess implements ProcessManager<InsuranceCard> {
     public void viewAll() {
         System.out.println("No.\tCard Number\tCard Holder ID\tPolicy Owner\texpiration Date");
         int i = 1;
+        cards.sort(Comparator.comparing(InsuranceCard::getCardNumber));
         for (InsuranceCard c : cards) {
             System.out.print(i + "\t");
             System.out.print(c.getCardNumber() + "\t");
