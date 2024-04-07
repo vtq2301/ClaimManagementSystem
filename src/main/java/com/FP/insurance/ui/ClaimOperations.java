@@ -118,8 +118,9 @@ public class ClaimOperations extends Operations {
 
             // Add new claim to the list of claims
             claims.add(newClaim);
+            claimProcess.viewOne(newClaim.getId());
             System.out.printf("Claim (id: %s) added successfully.\n", newClaim.getId());
-            viewOne(newClaim.getId());
+
         } catch (ParseException e) {
             System.out.println("Error parsing date. Please enter date in format YYYY-MM-DD.");
         } catch (InputMismatchException e){
@@ -134,49 +135,181 @@ public class ClaimOperations extends Operations {
 
     @Override
     public void updateOne() {
-        header("UPDATE CLAIM");
-        System.out.println("Enter the claim ID: ");
-        String idUpdate = scanner.next().trim();
-        Claim updateClaim = claimProcess.getOne(idUpdate);
-        if (updateClaim == null) {
-            System.out.println("Claim does not exist.");
-            startMenu("Claim");
+        header("UPDATE A CLAIM");
+
+        System.out.println("> Enter the claim ID to update: ");
+        String claimId = scanner.next().trim();
+        scanner.nextLine();
+        Claim claimToUpdate = claimProcess.getOne(claimId);
+        if (claimToUpdate == null) {
+            System.out.println("Claim does not exist. Returning to Claim Menu.");
+            return;
         }
-        claimProcess.viewOne(idUpdate);
-        System.out.println("Choose a number of what field you want to update? Enter updated data or leave blank.");
-        System.out.println("1. Claim Date");
-        System.out.println("2. Insured Person");
-        System.out.println("3. Card Number");
-        System.out.println("4. Exam Date");
-        System.out.println("6. Claim Amount");
-        System.out.println("7. Status");
-        System.out.println("8. Receiver Info");
-        System.out.println("9. Documents");
+        claimProcess.viewOne(claimToUpdate.getId());
+
+        try {
+            // Claim Date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println("-".repeat(40));
+            System.out.println("Current Claim Date: " + dateFormat.format(claimToUpdate.getClaimDate()));
+            System.out.println("> New Claim Date (YYYY-MM-DD or press Enter to skip): ");
+            String newClaimDateStr = scanner.nextLine().trim();
+            if (!newClaimDateStr.isEmpty()) {
+                Date newClaimDate = dateFormat.parse(newClaimDateStr);
+                claimToUpdate.setClaimDate(newClaimDate);
+            }
+
+            // Insured Person
+            System.out.println("-".repeat(40));
+            System.out.println("Current Insured Person ID: " + claimToUpdate.getInsuredPerson().getId());
+            System.out.print("> New Insured Person Customer ID (or press Enter to skip): ");
+            String newInsuredPersonId = scanner.nextLine().trim();
+            if (!newInsuredPersonId.isEmpty()) {
+                Customer newInsuredPerson = customerProcess.getOne(newInsuredPersonId);
+                if (newInsuredPerson != null) {
+                    claimToUpdate.setInsuredPerson(newInsuredPerson);
+                } else {
+                    System.out.println("No customer found with ID: " + newInsuredPersonId);
+                }
+            }
+
+            // Card Number
+            System.out.println("-".repeat(40));
+            System.out.println("Current Card Number: " + claimToUpdate.getCard().getCardNumber());
+            System.out.println("> New Card Number (or press Enter to skip): ");
+            String newCardNumber = scanner.nextLine().trim();
+            if (!newCardNumber.isEmpty()) {
+                InsuranceCard newCard = insuranceCardProcess.getOne(newCardNumber);
+                if (newCard != null) {
+                    claimToUpdate.setCard(newCard);
+                } else {
+                    System.out.println("No Insurance Card found with number: " + newCardNumber);
+                }
+            }
+
+            // Exam Date
+            System.out.println("-".repeat(40));
+            System.out.println("Current Exam Date: " + dateFormat.format(claimToUpdate.getExamDate()));
+            System.out.print("> New Exam Date (YYYY-MM-DD or press Enter to skip): ");
+            String newExamDateStr = scanner.nextLine().trim();
+            if (!newExamDateStr.isEmpty()) {
+                Date newExamDate = dateFormat.parse(newExamDateStr);
+                claimToUpdate.setClaimDate(newExamDate);
+            }
+            // Claim Amount
+            System.out.println("-".repeat(40));
+            System.out.println("Current Claim Amount: " + claimToUpdate.getClaimAmount());
+            System.out.print("> New Claim Amount (or press Enter to skip): ");
+            String claimAmountStr = scanner.nextLine().trim();
+            if (!claimAmountStr.isEmpty()) {
+                try {
+                    int claimAmount = Integer.parseInt(claimAmountStr);
+                    if (claimAmount > 0) {
+                        claimToUpdate.setClaimAmount(claimAmount);
+                    } else {
+                        System.out.println("Claim Amount should be positive.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Claim Amount should be a positive integer.");
+                }
+            }
+
+            // Status
+            System.out.println("-".repeat(40));
+            System.out.println("Current Claim Status: " + claimToUpdate.getStatus().name());
+            System.out.println("> Choose a Claim Status:");
+            System.out.println("1. NEW");
+            System.out.println("2. PROCESSING");
+            System.out.println("3. DONE");
+            System.out.print("Enter your choice (1, 2, or 3): ");
+            int statusChoice = scanner.nextInt();
+            ClaimStatus status = null;
+
+            switch (statusChoice) {
+                case 1:
+                    status = ClaimStatus.NEW;
+                    break;
+                case 2:
+                    status = ClaimStatus.PROCESSING;
+                    break;
+                case 3:
+                    status = ClaimStatus.DONE;
+                    break;
+                default:
+                    status = claimToUpdate.getStatus();
+                    break;
+            }
+            claimToUpdate.setStatus(status);
+
+            // Receiver Info
+            System.out.println("Current Receiver Info: " + claimToUpdate.getReceiverInfo());
+            System.out.println("> New Receiver Info (or press Enter to skip): ");
+            String newInfo = scanner.nextLine().trim();
+            if (!newInfo.isEmpty()) {
+                claimToUpdate.setReceiverInfo(newInfo);
+            }
+
+            // Find the index of the claim to be updated
+            int index = -1;
+            for (int i = 0; i < claims.size(); i++) {
+                if (claims.get(i).getId().equals(claimToUpdate.getId())) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index != -1) {
+                claims.set(index, claimToUpdate);
+                System.out.println("Claim updated successfully.");
+            } else {
+                System.out.println("Claim not found. Update failed.");
+            }
+
+        } catch (ParseException e) {
+            System.out.println("Error parsing date. Please enter date in format YYYY-MM-DD.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
     }
 
     @Override
     public void deleteOne() {
-        header("Removing Claim");
+        header("REMOVING A CLAIM");
         System.out.println("Enter Claim ID to delete: ");
-        String idDelete = scanner.nextLine();
-        System.out.println("Are you sure you want to delete this claim?");
-        claimProcess.viewOne(idDelete);
-        System.out.println("Type YES or NO: ");
-        String c = scanner.nextLine();
-        if (c.equalsIgnoreCase("YES")) {
-            System.out.println("Removing claim...");
-            claimProcess.delete(idDelete);
-            System.out.println("Done removing! But the data is not saved. Would you want to save?");
-            System.out.println("> Type YES or NO: ");
-            String saveChoice = scanner.nextLine();
-            if (saveChoice.equalsIgnoreCase("YES")) {
-                System.out.println("Saving claims to file...");
-                claimDAO.writeAll(claims);
-                System.out.println("Saving done!");
+        String claimId = scanner.nextLine().trim();
+
+        // Check if the claim with the provided ID exists
+        Claim claimToDelete = claimProcess.getOne(claimId);
+        if (claimToDelete != null) {
+            System.out.println("Are you sure you want to delete this claim?");
+            claimProcess.viewOne(claimId);
+            System.out.println("Type YES to delete: ");
+            String confirmation = scanner.nextLine().trim();
+
+            if (confirmation.equalsIgnoreCase("YES")) {
+                // Remove the claim from the list
+                claims.remove(claimToDelete);
+                System.out.println("Claim successfully removed.");
+
+                // Ask the user if they want to save the changes
+                System.out.println("Would you like to save the changes? (YES/NO)");
+                String saveChoice = scanner.nextLine().trim();
+                if (saveChoice.equalsIgnoreCase("YES")) {
+                    save();
+                } else {
+                    System.out.println("Changes not saved in database.");
+                }
+            } else {
+                System.out.println("Deletion cancelled.");
             }
-            startMenu("Claim");
+        } else {
+            System.out.println("Claim with ID " + claimId + " not found.");
         }
+
+        // Return to the main claim menu
+        startMenu("Claim");
     }
+
 
     @Override
     public void viewOne() {

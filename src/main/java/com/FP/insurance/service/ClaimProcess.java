@@ -3,6 +3,7 @@ package main.java.com.FP.insurance.service;
 import main.java.com.FP.insurance.model.Claim;
 
 import java.sql.SQLOutput;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ClaimProcess implements ProcessManager<Claim> {
@@ -70,11 +71,12 @@ public class ClaimProcess implements ProcessManager<Claim> {
      */
     @Override
     public void viewOne(String id) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Claim claim = getOne(id);
         System.out.println("ID\tClaim Date\tExam Date\tClaim Amount\tStatus");
         System.out.println(claim.getId() + "\t");
-        System.out.print(claim.getClaimDate().toString() + "\t");
-        System.out.print(claim.getExamDate().toString() + "\t");
+        System.out.print(dateFormat.format(claim.getClaimDate()) + "\t");
+        System.out.print(dateFormat.format(claim.getExamDate()) + "\t");
         System.out.print("$"+ claim.getClaimAmount() + "\t");
         System.out.print(claim.getStatus().name() + "\t");
 

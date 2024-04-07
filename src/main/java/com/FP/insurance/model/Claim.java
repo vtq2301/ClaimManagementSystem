@@ -78,6 +78,38 @@ public class Claim {
         return receiverInfo;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setClaimDate(Date claimDate) {
+        this.claimDate = claimDate;
+    }
+
+    public void setExamDate(Date examDate) {
+        this.examDate = examDate;
+    }
+
+    public void setInsuredPerson(Customer insuredPerson) {
+        this.insuredPerson = insuredPerson;
+    }
+
+    public void setCard(InsuranceCard card) {
+        this.card = card;
+    }
+
+    public void setClaimAmount(int claimAmount) {
+        this.claimAmount = claimAmount;
+    }
+
+    public void setStatus(ClaimStatus status) {
+        this.status = status;
+    }
+
+    public void setReceiverInfo(String receiverInfo) {
+        this.receiverInfo = receiverInfo;
+    }
+
     public void setDocuments(List<String> documents) {
         this.documents = documents;
     }
