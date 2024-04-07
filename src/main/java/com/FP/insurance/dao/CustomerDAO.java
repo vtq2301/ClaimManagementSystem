@@ -86,11 +86,18 @@ public class CustomerDAO implements DAO<Customer> {
             writer.write(HEADER + "\n");
 
             for (Customer customer : customers) {
+                String policyHolderId;
+                if (customer.getPolicyHolder() != null){
+                    policyHolderId = customer.getPolicyHolder().getId();
+                } else {
+                    policyHolderId = customer.getId();
+                }
+
                 writer.write(String.format("%s,%s,%s,%s\n",
                         customer.getId(),
                         customer.getFullName(),
                         customer.getCardNumber(),
-                        customer.getPolicyHolder().getId()
+                        policyHolderId
                 ));
             }
         } catch (IOException e) {

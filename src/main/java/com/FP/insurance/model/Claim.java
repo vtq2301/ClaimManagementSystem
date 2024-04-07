@@ -19,6 +19,17 @@ public class Claim {
     private ClaimStatus status;
     private String receiverInfo; // format: bank-name-number
 
+    public Claim(Date claimDate, Date examDate, Customer insuredPerson, InsuranceCard card, int claimAmount, ClaimStatus status, String receiverInfo) {
+        this.claimDate = claimDate;
+        this.examDate = examDate;
+        this.insuredPerson = insuredPerson;
+        this.card = card;
+        this.claimAmount = claimAmount;
+        this.status = status;
+        this.receiverInfo = receiverInfo;
+        this.id = null;
+    }
+
     public Claim(String id, Date claimDate, Customer insuredPerson, InsuranceCard card, Date examDate, List<String> documents, int claimAmount, ClaimStatus status, String receiverInfo) {
         this.id = id;
         this.claimDate = claimDate;
@@ -65,6 +76,10 @@ public class Claim {
 
     public String getReceiverInfo() {
         return receiverInfo;
+    }
+
+    public void setDocuments(List<String> documents) {
+        this.documents = documents;
     }
 
     @Override
