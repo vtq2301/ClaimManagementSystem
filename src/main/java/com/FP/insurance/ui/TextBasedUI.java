@@ -1,20 +1,15 @@
+/**
+ *@author Vu Tien Quang - s3981278
+ */
 package main.java.com.FP.insurance.ui;
 
 import main.java.com.FP.insurance.dao.ClaimDAO;
 import main.java.com.FP.insurance.dao.CustomerDAO;
 import main.java.com.FP.insurance.dao.InsuranceCardDAO;
 import main.java.com.FP.insurance.model.Claim;
-import main.java.com.FP.insurance.model.ClaimStatus;
 import main.java.com.FP.insurance.model.Customer;
 import main.java.com.FP.insurance.model.InsuranceCard;
-import main.java.com.FP.insurance.service.ClaimProcess;
-import main.java.com.FP.insurance.service.CustomerProcess;
-import main.java.com.FP.insurance.service.InsuranceCardProcess;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,10 +18,10 @@ public class TextBasedUI {
     private List<Customer> customers;
     private List<InsuranceCard> cards;
     private List<Claim> claims;
-    private static Scanner scanner = new Scanner(System.in);
-    private CustomerDAO customerDAO;
-    private InsuranceCardDAO insuranceCardDAO;
-    private ClaimDAO claimDAO;
+    private static final Scanner scanner = new Scanner(System.in);
+    private final CustomerDAO customerDAO;
+    private final InsuranceCardDAO insuranceCardDAO;
+    private final ClaimDAO claimDAO;
 
 
     public TextBasedUI() {
@@ -58,9 +53,7 @@ public class TextBasedUI {
     }
 
     public void start() {
-        boolean running = true;
-
-        while (running) {
+        while (true) {
             ClaimOperations operations = new ClaimOperations(customers, claims, cards, customerDAO, claimDAO, insuranceCardDAO, scanner);
             operations.menu();
         }

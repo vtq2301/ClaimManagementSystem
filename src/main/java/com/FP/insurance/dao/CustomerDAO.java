@@ -1,3 +1,11 @@
+/**
+ * A data access object (DAO) for managing customers.
+ * This class provides methods to read and write customer data from/to a file.
+ * It implements the DAO interface for generic data access operations.
+ * Customers can be either policy holders or dependents, and they are organized accordingly.
+ *
+ * @author Vu Tien Quang - s3981278
+ */
 package main.java.com.FP.insurance.dao;
 
 import main.java.com.FP.insurance.model.Customer;
@@ -14,6 +22,7 @@ public class CustomerDAO implements DAO<Customer> {
     private static final String CUSTOMER_FILE_PATH = "src/resources/customers.txt";
 
     private static final String HEADER = "id,fullName,cardNumber,policyHolderId";
+
     /**
      * Reads customer data from a file and organizes it into a list of customers.
      * This includes creating PolicyHolder and Dependent objects
@@ -44,17 +53,7 @@ public class CustomerDAO implements DAO<Customer> {
                     dependentsMap.put(id, new ArrayList<>());
                 } else { // Dependent
                     Dependent dependent = new Dependent(id, fullName, cardNumber);
-                    // List<Dependent> dependents = dependentsMap.get(policyHolderId);
-                    //                   if (dependents == null) {
-                    //                        dependents = new ArrayList<>();
-                    //                        dependentsMap.put(policyHolderId, dependents);
-                    //                    }
-                    // dependents.add(dependent);
-                    // dependentsMap.put(policyHolderId, dependents);
-                    // This snippet can be replaced with computeIfAbsent here:
-                    dependentsMap.computeIfAbsent(policyHolderId, k -> new ArrayList<>())
-                                                        .add(dependent);
-
+                    dependentsMap.computeIfAbsent(policyHolderId, k -> new ArrayList<>()).add(dependent);
                 }
             }
         } catch (IOException e) {
@@ -78,7 +77,9 @@ public class CustomerDAO implements DAO<Customer> {
     }
 
     /**
-     * @param data
+     * Writes all customers to the customer file.
+     *
+     * @param customers The list of customers to be written to the file.
      */
     @Override
     public void writeAll(List<Customer> customers) {

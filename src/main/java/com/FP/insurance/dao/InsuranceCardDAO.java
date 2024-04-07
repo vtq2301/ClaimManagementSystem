@@ -1,3 +1,6 @@
+/**
+ *@author Vu Tien Quang - s3981278
+ */
 package main.java.com.FP.insurance.dao;
 
 import main.java.com.FP.insurance.model.Customer;

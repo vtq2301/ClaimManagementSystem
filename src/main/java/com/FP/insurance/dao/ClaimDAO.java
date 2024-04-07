@@ -1,3 +1,10 @@
+/**
+ * A data access object (DAO) for managing claims.
+ * This class provides methods to read and write claim data from/to a file.
+ * It implements the DAO interface for generic data access operations.
+ *
+ * @author Vu Tien Quang - s3981278
+ */
 package main.java.com.FP.insurance.dao;
 
 import main.java.com.FP.insurance.model.*;
@@ -16,24 +23,46 @@ public class ClaimDAO implements DAO<Claim>{
     private List<Customer> customers;
     private List<InsuranceCard> cards;
 
+    /**
+     * Gets the list of customers associated with the claims.
+     *
+     * @return The list of customers.
+     */
     public List<Customer> getCustomers() {
         return customers;
     }
 
+    /**
+     * Sets the list of customers associated with the claims.
+     *
+     * @param customers The list of customers.
+     */
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
     }
 
+    /**
+     * Gets the list of insurance cards associated with the claims.
+     *
+     * @return The list of insurance cards.
+     */
     public List<InsuranceCard> getCards() {
         return cards;
     }
 
+    /**
+     * Sets the list of insurance cards associated with the claims.
+     *
+     * @param cards The list of insurance cards.
+     */
     public void setCards(List<InsuranceCard> cards) {
         this.cards = cards;
     }
 
     /**
-     * @return
+     * Reads all claims from the claims file and returns them as a list of Claim objects.
+     *
+     * @return The list of claims read from the file.
      */
     @Override
     public List<Claim> readAll() {
@@ -96,7 +125,9 @@ public class ClaimDAO implements DAO<Claim>{
     }
 
     /**
-     * @param data
+     * Writes all claims to the claims file.
+     *
+     * @param claims The list of claims to be written to the file.
      */
     @Override
     public void writeAll(List<Claim> claims) {

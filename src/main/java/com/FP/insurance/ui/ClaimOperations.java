@@ -1,3 +1,6 @@
+/**
+ *@author Vu Tien Quang - s3981278
+ */
 package main.java.com.FP.insurance.ui;
 
 import main.java.com.FP.insurance.dao.ClaimDAO;
@@ -10,7 +13,6 @@ import main.java.com.FP.insurance.model.InsuranceCard;
 import main.java.com.FP.insurance.service.ClaimProcess;
 import main.java.com.FP.insurance.service.CustomerProcess;
 import main.java.com.FP.insurance.service.InsuranceCardProcess;
-import main.java.com.FP.insurance.ui.Operations;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
